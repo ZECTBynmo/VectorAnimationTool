@@ -1,0 +1,62 @@
+<html>
+	<head>	
+		<META HTTP-EQUIV="Cache-Control" CONTENT="max-age=0">
+		<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+		<META http-equiv="expires" content="0">
+		<META HTTP-EQUIV="Expires" CONTENT="Tue, 01 Jan 1980 1:00:00 GMT">
+		<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	</head>
+	<body>
+		<style>
+			#container {
+				position: fixed;
+				left: 0;
+				top: 0;
+			}
+			
+			#controls {
+				position: fixed;
+				left: 1035;
+				top: 120;
+			}
+			
+			#previewContainer {
+				position: fixed;
+				top: 10;
+				left: 1035;
+			}
+		</style>		
+		<div id="container" width="1024" height="768">
+			<canvas id="canvas" width="1024" height="768">
+				<p>Unfortunately, your browser is currently unsupported by our web 
+				application.  We are sorry for the inconvenience. Please use one of the 
+				supported browsers listed below, or draw the image you want using an 
+				offline tool.</p>
+				<p>Supported browsers: <a href="http://www.opera.com">Opera</a>, <a 
+				  href="http://www.mozilla.com">Firefox</a>, <a 
+				  href="http://www.apple.com/safari">Safari</a>, and <a 
+				  href="http://www.konqueror.org">Konqueror</a>.</p>
+			</canvas>
+		</div>
+		<div id="previewContainer">
+			<canvas id="miniCanvas" width="133" height="100"></canvas>
+			<canvas id="animationCanvas" width="133" height="100"></canvas>
+		</div>
+		
+		
+		<div id="controls">
+			<input id="clearButton" type="button" onClick="clearCanvas();" value="Clear Canvas"/>
+			<!--<input id="saveButton" type="button" value="Save All"/>-->
+			<input id="copyButton" type="button" onClick="copyToMiniCanvas();" value="Test on Mini Canvas"/>
+			<input id="pushFrameButton" type="button" onClick="pushAnimationFrame();" value="Push Frame Into Animation"/>
+			<!--<input id="redrawButton" type="button" onClick="redrawCanvas();" value="Redraw Canvas"/>-->
+			
+			<br><br>
+			
+			<input id="clearAnimationButton" type="button" onClick="clearAnimation();" value="Clear Animation"/>
+		</div>
+		
+		<script type="text/javascript" src="CDrawContext.js"></script>
+		<script type="text/javascript" src="VectorDrawingTool.js"></script>
+	</body>
+</html>
