@@ -536,9 +536,9 @@ function showChat (nick) {
 //we want to show a count of unread messages when the window does not have focus
 function updateTitle(){
 	if (CONFIG.unread) {
-		document.title = "(" + CONFIG.unread.toString() + ") youtube share";
+		document.title = "(" + CONFIG.unread.toString() + ") Animate Together";
 	} else {
-		document.title = "youtube share";
+		document.title = "Animate Together";
 	}
 }
 
