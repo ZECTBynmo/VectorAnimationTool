@@ -73,14 +73,6 @@ fu.get("/Countdown/jquery.countdown.css", fu.staticHandler("Countdown/jquery.cou
 
 // Create our channel and listen for its relevant
 var m_channel = new SChannelImpl.getNewChannel( m_eventHandler );
-m_eventHandler.addEventCallback( "userQueueChanged", notifyUserQueueChanges );
-
-
-//////////////////////////////////////////////////////////////////////////
-// Notify the channel that the user queue has changed
-function notifyUserQueueChanges() {
-	m_channel.appendMessage( "channel", "userQueueChanged" );
-} // end notifyUserQueueChanges()
 
 
 //////////////////////////////////////////////////////////////////////////

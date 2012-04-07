@@ -27,8 +27,14 @@ function UserManager( eventHandler ) {
 	//////////////////////////////////////////////////////////////////////////
 	// Setup our events
 	//////////////////////////////////////////////////////////////////////////
-	// User Queue Changed
-	this.m_eventHandler.createEvent( "userQueueChanged" );
+	// User Joined
+	/*
+	this.m_eventHandler.createEvent( "userJoined" );
+	this.m_eventHandler.addEventCallback( "userTurnEnded", this.handleUserJoined, this );
+	
+	// User Left
+	this.m_eventHandler.createEvent( "userParted" );
+	*/
 	
 	// User Turn Ended
 	this.m_eventHandler.createEvent( "userTurnEnded" );
@@ -92,39 +98,6 @@ UserManager.prototype.addSession = function( session ) {
 UserManager.prototype.getNextQueuedUser = function() {
 	return this.m_userQueue[0];
 }; // end UserManager.addSession()
-
-
-//////////////////////////////////////////////////////////////////////////
-// Add a session to the channel's queue
-UserManager.prototype.addUserToQueue = function( id ) {
-	var iUser = this.getUserIndex( id );
-	
-	// Make sure the user is in the room
-	if( iUser >= 0 ) {
-		// Queue the user if they weren't already
-		if( !this.isUserQueued(id) && util.exists(this.m_userList[iUser]) ) {
-			this.m_userQueue.push( this.m_userList[iUser] );
-			util.serverConsole(sys, "Added " + this.m_userList[iUser].m_nick + " to the user queue" );
-			
-			// Fire our queue changed event
-			this.m_eventHandler.fireEvent( "userQueueChanged" );
-		}
-	}
-}; // end UserManager.addSession()
-
-
-//////////////////////////////////////////////////////////////////////////
-// Returns whether the user is already in the queue
-UserManager.prototype.isUserQueued = function( id ) {
-	var isAlreadyQueued = false;
-	for( iUser=0; iUser<this.m_userQueue.length; ++iUser ) {
-		if( this.m_userQueue[iUser].m_id == id ) { 
-			isAlreadyQueued = true; 
-		}
-	}
-	
-	return isAlreadyQueued;
-}; // end UserManager.isUserQueued()
 
 
 //////////////////////////////////////////////////////////////////////////

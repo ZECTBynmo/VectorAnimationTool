@@ -87,10 +87,13 @@ Channel.prototype.appendMessage = function( nick, type, text, target, data ) {
 
 	switch (type) {
 		case "msg":
+			var breaktest=0;
 			break;
 		case "join":
+			var breaktest=0;
 			break;
 		case "part":
+			var breaktest=0;
 			break;
 		case "vidStart":
 			this.m_util.serverConsole(this.m_sys, "Pushing vidStart out" );
@@ -145,17 +148,6 @@ Channel.prototype.userJoin = function( session ) {
 	
 	// Let the channel know we've added a session
 	this.appendMessage(session.m_nick, "join");
-	
-	// If this is the first user to enter the channel, make him the next player automatically
-	if( !util.exists(this.m_userManager.getNextQueuedUser()) ) {
-		// Push the user into the user queue, because they're the only one in the room
-		this.m_userManager.addUserToQueue( session.m_id );
-		
-		// Tell the channel what we've done
-		this.m_eventHandler.fireEvent( "userTurnEnded" );
-		
-		this.m_util.serverConsole( this.m_sys, "first user joined, " + session.m_nick + " is next" );
-	}
 }; // end Channel.userJoin()
 
 
@@ -211,7 +203,12 @@ Channel.prototype.getUserQueue = function( since, callback ) {
 //////////////////////////////////////////////////////////////////////////
 // Gets a user session out of the channel
 Channel.prototype.destroySession = function( id ) {
+	var session = this.m_userManager.getUserById( id );
+	
 	this.m_userManager.destroySession( id );
+	
+	if( util.exists(session) )
+		this.appendMessage(session.m_nick, "part");
 }; // end Channel.destroySession()
 
 
