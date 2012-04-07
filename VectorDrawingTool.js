@@ -12,13 +12,16 @@ var lastDrawnPoint = 0;				// The last point we drew in the main drawing context
 
 // Our draw contexts
 var drawContext;					// Main drawing context
-var	miniDrawContext;				// Small preview context for the current slide
+var miniDrawContext;				// Small preview context for the current slide
 var animationContext;				// Small preview context for the full animation
+
+// Our collection of animation contexts
+var animContexts = new Array();
+var newAnimContext;
 
 // Status flag
 var isInitialized = false;			// Set when the page is initialized
-var isMouseDown = false;			// Set when the mouse is down
-
+var isMouseDown = false;		// Set when the mouse is down
 
 // HTML elements, just created here so we can know whether
 // we're drawing within them inside global functions
@@ -28,6 +31,10 @@ var canvas;
 // Keep everything in anonymous function, called on window load.
 if(window.addEventListener) {
 window.addEventListener('load', function () {
+	// Create a new animation context and push it into our collection
+	newAnimContext = new AnimationContext( "animationCanvas" );
+	animContexts.push( newAnimContext );
+
 	// Grab our UI elements and set our initialized flag
 	canvasContainer = document.getElementById( "container" );
 	canvas= document.getElementById( "canvas" );
@@ -49,30 +56,16 @@ window.addEventListener('load', function () {
 	// Our mouse event handlers
 	addEventListener( "mousedown", captureMouseDown, false );
 	addEventListener( "mouseup", captureMouseUp, false );
-	addEventListener( "mousemove", captureMouseMove, false );	
+	addEventListener( "mousemove", captureMouseMove, false );
 	
 	var clearIntervalFlag = false;
 	
 	// Constantly draw the current animation
 	var animationInterval = setInterval( function() {
-		// Just get our if we haven't pushed any frames into the animation
-		if( animationPaths.length == 0 ) { return; }
-		
-		var relativePaths = new Array();
-
-		// Loop through all paths in this frame and turn them into relative paths
-		for( iPath=0; iPath<animationPaths[frameToDraw].length; ++iPath ) {
-			if( animationPaths[frameToDraw][iPath].length > 2 ) {
-				relativePaths.push( drawContext.mapPathToRelative(animationPaths[frameToDraw][iPath]) );
-			}
-		}
-		
-		animationContext.clear();
-		animationContext.drawMultiPolyPointRelative( relativePaths, 1 );
-		
-		// Increment our last frame drawn status
-		frameToDraw++;		
-		if( frameToDraw == animationPaths.length ) { frameToDraw = 0; }
+		for( iAnimation = 0; iAnimation<animContexts.length; ++iAnimation ) {
+			// Tell this animation context to draw it's next frame
+			animContexts[iAnimation].drawNextFrame();
+		} // end for each animation
 	}, ANIMATION_INTERVAL_MILLIS );
 	
 	// Our mouse move handler
@@ -81,8 +74,8 @@ window.addEventListener('load', function () {
 		if( !isEventInsideCanvas(event) || !isMouseDown ) { return; }
 		
 		var newPoint = { 
-			x: Math.round( event.clientX ),
-			y: Math.round( event.clientY )
+			x: event.clientX ,
+			y: event.clientY
 		};
 		
 		if( currentPath.length == 0 || currentPath[currentPath.length-1].x != newPoint.x || currentPath[currentPath.length-1].y != newPoint.y ) {
