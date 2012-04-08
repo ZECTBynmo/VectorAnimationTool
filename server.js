@@ -44,7 +44,7 @@ fu.get("/util.js", fu.staticHandler("util.js"));
 fu.get("/client.js", fu.staticHandler("client.js"));
 fu.get("/CDrawContext.js", fu.staticHandler("CDrawContext.js"));
 fu.get("/CAnimation.js", fu.staticHandler("CAnimation.js"));
-fu.get("/CAnimator.js", fu.staticHandler("CAnimation.js"));
+fu.get("/CAnimator.js", fu.staticHandler("CAnimator.js"));
 fu.get("/VectorDrawingTool.js", fu.staticHandler("VectorDrawingTool.js"));
 
 

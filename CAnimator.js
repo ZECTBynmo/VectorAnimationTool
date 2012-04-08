@@ -29,6 +29,8 @@ Animator.prototype.startAnimation = function() {
 
 	// Start the interval
 	this.animationInterval = setInterval( function() {
+		if( typeof(closureScope.animContexts) == "undefined" ) { return; }
+	
 		// Draw the next frame of all the animations we have
 		for( iAnimation=0; iAnimation<animContexts.length; ++iAnimation ) {
 			closureScope.animContexts[iAnimation].drawNextFrame()	

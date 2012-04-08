@@ -16,7 +16,7 @@ var miniDrawContext;				// Small preview context for the current slide
 var animationContext;				// Small preview context for the full animation
 
 // Our Animator
-//var animator = new Animator( );
+var animator = new Animator( );
 var animContexts = new Array();
 
 // Status flag
@@ -193,8 +193,8 @@ function isEventInsideCanvas( event ) {
 
 // Push the current frame into the animation
 function pushAnimationFrame() {
-	if( capturedPaths.length > 0 ) {
-		animationContext.addPath( capturedPaths );
+	if( capturedPaths.length > 0 ) {	
+		animationContext.addFrameAsAbsolute( capturedPaths );
 		
 		clearCanvas();
 		
