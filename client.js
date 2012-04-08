@@ -82,9 +82,6 @@ Date.fromString = function(str) {
   return new Date(Date.parse(str));
 };
 
-//  CUT  ///////////////////////////////////////////////////////////////////
-
-
 
 //updates the users link to reflect the number of active users
 function updateUsersLink ( ) {
@@ -97,6 +94,7 @@ function updateUsersLink ( ) {
 function userJoin(nick, timestamp) {
 	// Put it in the stream
 	addMessage(nick, "joined", timestamp, "join");
+	
 	// If we already know about this user, ignore it
 	for (var i = 0; i < nicks.length; i++) {
 		if (nicks[i] == nick) 
@@ -105,18 +103,12 @@ function userJoin(nick, timestamp) {
 	
 	// Otherwise, add the user to the list
 	nicks.push(nick);
+
 	// Update the UI
 	updateUsersLink();
-
-	// Put an avatar in the room in a random location
-	var avatarArea = document.getElementById("avatarArea");
 	
-	// Create a new avatar image
-	//var newAvatar = document.createElement('img');
-	//newAvatar.setAttribute('src',"/avatar.png");
-	//newAvatar.setAttribute('alt',"Avatar");
-	
-	//avatarArea.appendChild(newAvatar);
+	// Create a new user animation chunk
+	addNewUserAnimation( nick );
 }
 
 //handles someone leaving
@@ -584,7 +576,37 @@ $(document).ready(function() {
   showConnect();
 });
 
-//if we can, notify the server that we're going away.
+//////////////////////////////////////////////////////////////////////////
+// if we can, notify the server that we're going away.
 $(window).unload(function () {
 	jQuery.get("/part", {id: CONFIG.id}, function (data) { }, "json");
-});
+}); // end window unload
+
+
+//////////////////////////////////////////////////////////////////////////
+// Insert a new animation chunk into the window for a new user
+function addNewUserAnimation( nick ) {
+
+	var animationChunk = $(document.createElement("table"));
+	
+	animationChunk.addClass("animationChunk");
+
+	var content = '<tr>'
+              + '<td class="id">' 
+			  + nick 
+			  + '</td>'
+              + '<td class="nick">' 
+			  + nick 
+			  + '</td>'
+              + '<td class="animationContext">' 
+			  + '<div id=anim_' + nick + '></div>'
+			  + '</td>'
+              + '</tr>'
+              ;
+			  
+  animationChunk.html( content );
+  
+  // Add the new animation chunk to the room animation canvases
+  $("#roomAnimationCanvases").append(animationChunk);
+  
+} // end addNewUserAnimation()

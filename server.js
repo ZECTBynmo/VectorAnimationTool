@@ -37,6 +37,7 @@ fu.get("/", fu.staticHandler("VectorDrawingTool.html"));
 fu.get("/VectorDrawingTool.html", fu.staticHandler("VectorDrawingTool.html"));
 fu.get("/style.css", fu.staticHandler("style.css"));
 
+
 // ---------------------------------------------------------------------------------------------
 // Internal javascript
 // ---------------------------------------------------------------------------------------------
