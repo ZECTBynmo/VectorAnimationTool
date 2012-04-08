@@ -576,6 +576,7 @@ $(document).ready(function() {
   showConnect();
 });
 
+
 //////////////////////////////////////////////////////////////////////////
 // if we can, notify the server that we're going away.
 $(window).unload(function () {
@@ -598,8 +599,9 @@ function addNewUserAnimation( nick ) {
               + '<td class="nick">' 
 			  + nick 
 			  + '</td>'
-              + '<td class="animationContext">' 
-			  + '<div id=anim_' + nick + '></div>'
+			  + '</tr><tr>'
+              + '<td class="animationContext" width="133" height="100">' 
+			  + '<div id="anim_' + nick + '" width="133" height="100"></div>'
 			  + '</td>'
               + '</tr>'
               ;
@@ -608,5 +610,8 @@ function addNewUserAnimation( nick ) {
   
   // Add the new animation chunk to the room animation canvases
   $("#roomAnimationCanvases").append(animationChunk);
+  
+  // Now create a new animation inside of the chunk we just created
+  var newAnimation = new AnimationContext( "anim_" + nick );
   
 } // end addNewUserAnimation()

@@ -60,8 +60,9 @@
 				border: 2px solid #42413E;
 				border-style: ridge;
 				margin:20px 3px 20px 0px;
-				position:relative;
-				float:right;
+				position:fixed;
+				top: 5;
+				left: 1085;
 				width: 250;
 				overflow:hidden;
 				height:399px;
@@ -127,6 +128,18 @@
 			  font-family: Helvetica; 
 			  width: 40em;
 			  border: 0;
+			}
+			
+			/*----------- ANIMATION CONTEXTS -------*/
+			#roomAnimationCanvases {
+				position: fixed;
+				width: 508;
+				left: 805;
+				top: 440;
+				height: 200;
+				border-style: ridge;
+				border-top: 2px solid #100202;
+				overflow:hidden;
 			}
 		</style>		
 		
@@ -194,6 +207,6 @@
 				<input tabindex="1" type="text" id="entry"/>
 			</div>
 		</div>
-		<div id="roomAnimationCanvases"></div>
+		<div id="roomAnimationCanvases" class="roomAnimationCanvases" width="400"></div>
 	</body>
 </html>
