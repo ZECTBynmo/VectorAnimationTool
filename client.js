@@ -253,7 +253,7 @@ function addMessage (from, text, time, _class) {
   text = text.replace(util.urlRE, '<a target="_blank" href="$&">$&</a>');
 
   var content = '<tr>'
-              + '  <td class="date">' + util.timeString(time) + '</td>'
+//              + '  <td class="date">' + util.timeString(time) + '</td>'
               + '  <td class="nick">' + util.toStaticHTML(from) + '</td>'
               + '  <td class="msg-text">' + text  + '</td>'
               + '</tr>'

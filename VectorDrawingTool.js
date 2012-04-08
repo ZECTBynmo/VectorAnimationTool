@@ -15,9 +15,9 @@ var drawContext;					// Main drawing context
 var miniDrawContext;				// Small preview context for the current slide
 var animationContext;				// Small preview context for the full animation
 
-// Our collection of animation contexts
+// Our Animator
+//var animator = new Animator( );
 var animContexts = new Array();
-var newAnimContext;
 
 // Status flag
 var isInitialized = false;			// Set when the page is initialized
@@ -32,8 +32,8 @@ var canvas;
 if(window.addEventListener) {
 window.addEventListener('load', function () {
 	// Create a new animation context and push it into our collection
-	newAnimContext = new AnimationContext( "animationCanvas" );
-	animContexts.push( newAnimContext );
+	animationContext = new AnimationContext( "animationCanvas", 200, true );
+	animContexts.push( animationContext );
 
 	// Grab our UI elements and set our initialized flag
 	canvasContainer = document.getElementById( "container" );
@@ -43,7 +43,6 @@ window.addEventListener('load', function () {
 	// Create our draw contexts
 	drawContext = new DrawContext();
 	miniDrawContext = new DrawContext( "miniCanvas" );
-	animationContext = new DrawContext( "animationCanvas" );
 	
 	// Draw our background
 	//drawContext.fillRect( 0, 0, drawContext.getWidth(), drawContext.getHeight(), "#fff" );
@@ -51,7 +50,6 @@ window.addEventListener('load', function () {
 	// Draw our borders
 	drawContext.drawRect( 0, 0, drawContext.getWidth(), drawContext.getHeight() );
 	miniDrawContext.drawRect( 0, 0, miniDrawContext.getWidth(), miniDrawContext.getHeight() );
-	animationContext.drawRect( 0, 0, animationContext.getWidth(), animationContext.getHeight() );	
 	
 	// Our mouse event handlers
 	addEventListener( "mousedown", captureMouseDown, false );
@@ -62,10 +60,11 @@ window.addEventListener('load', function () {
 	
 	// Constantly draw the current animation
 	var animationInterval = setInterval( function() {
-		for( iAnimation = 0; iAnimation<animContexts.length; ++iAnimation ) {
-			// Tell this animation context to draw it's next frame
-			animContexts[iAnimation].drawNextFrame();
-		} // end for each animation
+		///for( iAnimation = 0; iAnimation<animContexts.length; ++iAnimation ) {
+		//	// Tell this animation context to draw it's next frame
+		//	animContexts[iAnimation].drawNextFrame();
+		//} // end for each animation
+		animationContext.drawNextFrame( animationContext );
 	}, ANIMATION_INTERVAL_MILLIS );
 	
 	// Our mouse move handler
@@ -167,10 +166,7 @@ function clearCanvas() {
 
 // Clears the entire animation
 function clearAnimation() {
-	animationPaths = new Array();
-	animationContext.clear();
-	clearCanvas();
-	frameToDraw = 0;
+	animationContext.clearCanvas();
 }
 
 // Clears the canvas and redraws everything on it
@@ -186,7 +182,7 @@ function redrawCanvas() {
 
 // Returns whether an event is within the canvas
 function isEventInsideCanvas( event ) {
-	// Make sure the mouse down event is inside the canvas container
+	// Make sure the mouse event is inside the canvas container
 	if( event.clientX > canvasContainer.offsetLeft && event.clientX < canvasContainer.offsetLeft + canvas.width && 
 		event.clientY > canvasContainer.offsetTop && event.clientY < canvasContainer.offsetTop + canvas.height ) {
 		return true;
@@ -198,24 +194,17 @@ function isEventInsideCanvas( event ) {
 // Push the current frame into the animation
 function pushAnimationFrame() {
 	if( capturedPaths.length > 0 ) {
-		animationPaths.push( capturedPaths );
+		animationContext.addPath( capturedPaths );
 		
 		clearCanvas();
 		
 		// Draw the last frame we drew
 		var relativePaths = new Array();
-
-		// Loop through all paths in this frame and turn them into relative paths
-		var lastFrame = animationPaths.length-1;
 		
-		for( iPath=0; iPath<animationPaths[lastFrame].length; ++iPath ) {
-			if( animationPaths[lastFrame][iPath].length > 2 ) {
-				relativePaths.push( drawContext.mapPathToRelative(animationPaths[lastFrame][iPath]) );
-			}
-		}
+		var lastFrame = animationContext.getLastFrame();
 		
 		drawContext.setAlpha( 0.3 );
-		drawContext.drawMultiPolyPointRelative( relativePaths, 3 );
+		drawContext.drawMultiPolyPointRelative( lastFrame, 3 );
 		drawContext.setAlpha( 1 );
 	}
 }

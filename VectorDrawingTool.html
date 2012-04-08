@@ -28,6 +28,7 @@
 		<!-- ------------------------------------------------------------------------------------------------ -->
 		<script type="text/javascript" src="CDrawContext.js"></script>
 		<script type="text/javascript" src="CAnimation.js"></script>
+		<script type="text/javascript" src="CAnimator"></script>
 		<script type="text/javascript" src="VectorDrawingTool.js"></script>
 		<script type="text/javascript" src="client.js"></script>
 	
@@ -43,14 +44,14 @@
 			
 			#controls {
 				position: fixed;
-				left: 1035;
-				top: 400;
+				left: 810;
+				top: 200;
 			}
 			
 			#previewContainer {
 				position: fixed;
 				top: 10;
-				left: 1035;
+				left: 810;
 			}
 			
 			/*-----------CHAT ELEMENTS----------*/
@@ -61,7 +62,7 @@
 				margin:20px 3px 20px 0px;
 				position:relative;
 				float:right;
-				width: 300px;
+				width: 250;
 				overflow:hidden;
 				height:399px;
 			}
@@ -132,8 +133,8 @@
 		<!-- -------------------------------------------------------------------------------------------- -->
 		<!-- HTML --------------------------------------------------------------------------------------- -->
 		<!-- -------------------------------------------------------------------------------------------- -->
-		<div id="container" width="1024" height="768">
-			<canvas id="canvas" width="1024" height="768">
+		<div id="container" width="800" height="600">
+			<canvas id="canvas" width="800" height="600">
 				<p>Unfortunately, your browser is currently unsupported by our web 
 				application.  We are sorry for the inconvenience. Please use one of the 
 				supported browsers listed below, or draw the image you want using an 
@@ -154,6 +155,7 @@
 			<input id="clearButton" type="button" onClick="clearCanvas();" value="Clear Canvas"/>
 			<!--<input id="saveButton" type="button" value="Save All"/>-->
 			<input id="copyButton" type="button" onClick="copyToMiniCanvas();" value="Test on Mini Canvas"/>
+			<br>
 			<input id="pushFrameButton" type="button" onClick="pushAnimationFrame();" value="Push Frame Into Animation"/>
 			<!--<input id="redrawButton" type="button" onClick="redrawCanvas();" value="Redraw Canvas"/>-->
 			
