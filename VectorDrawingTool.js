@@ -32,7 +32,7 @@ var canvas;
 if(window.addEventListener) {
 window.addEventListener('load', function () {
 	// Create a new animation context and push it into our collection
-	animationContext = new AnimationContext( "animationCanvas", 200, true );
+	animationContext = new AnimationContext( "animationCanvas" );
 	animContexts.push( animationContext );
 
 	// Grab our UI elements and set our initialized flag
@@ -166,7 +166,7 @@ function clearCanvas() {
 
 // Clears the entire animation
 function clearAnimation() {
-	animationContext.clearCanvas();
+	animationContext.clearAnimation();
 }
 
 // Clears the canvas and redraws everything on it
@@ -195,6 +195,9 @@ function isEventInsideCanvas( event ) {
 function pushAnimationFrame() {
 	if( capturedPaths.length > 0 ) {	
 		animationContext.addFrameAsAbsolute( capturedPaths );
+		
+		// Tell the server about our changes
+		broadcastNewFrame( capturedPaths );
 		
 		clearCanvas();
 		

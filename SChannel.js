@@ -44,6 +44,7 @@ function Channel( eventHandler ) {
 
 	// clear old callbacks
 	// they can hang around for at most CALLBACK_LIFETIME.
+	// they can hang around for at most CALLBACK_LIFETIME.
 	setInterval(function () {
 		if( !this.m_callbacks || !this.m_messages ) return;
 		
@@ -87,13 +88,12 @@ Channel.prototype.appendMessage = function( nick, type, text, target, data ) {
 
 	switch (type) {
 		case "msg":
-			var breaktest=0;
 			break;
 		case "join":
-			var breaktest=0;
 			break;
 		case "part":
-			var breaktest=0;
+			break;
+		case "newFrame":
 			break;
 		case "vidStart":
 			this.m_util.serverConsole(this.m_sys, "Pushing vidStart out" );
@@ -147,7 +147,7 @@ Channel.prototype.userJoin = function( session ) {
 	this.m_userManager.addSession( session );
 	
 	// Let the channel know we've added a session
-	this.appendMessage(session.m_nick, "join");
+	this.appendMessage(session.m_nick, "join", "", "", session.m_id);
 }; // end Channel.userJoin()
 
 

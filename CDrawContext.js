@@ -12,7 +12,6 @@ function DrawContext( elementName ) {
 	
 	// Find the canvas element.
     this.canvas = document.getElementById( this.elementName );
-
 	
 	// Get the 2D canvas context.
     this.context = this.canvas.getContext('2d');

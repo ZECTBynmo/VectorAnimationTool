@@ -5,7 +5,7 @@ function AnimationContext( canvasName, animationIntervalMillis, isSelfAnimating 
 	if( typeof(canvasName) == "undefined" ) { canvasName = "canvas"; }
 
 	// Default auto-animation to false
-	if( typeof(isSelfAnimating) == "undefined" ) {	isSelfAnimating = false; }
+	if( typeof(isSelfAnimating) == "undefined" ) { isSelfAnimating = false; }
 	
 	// Default our animation interval timing
 	if( typeof(animationIntervalMillis) == "undefined" ) { animationIntervalMillis = DEFAULT_ANIMATION_INTERVAL_MILLIS; }
@@ -18,7 +18,7 @@ function AnimationContext( canvasName, animationIntervalMillis, isSelfAnimating 
 	this.animationIntervalTime = animationIntervalMillis;
 	
 	this.animationFrames = new Array();	// All drawing code recorded so far organized by [frame][path][point]
-	this.frameToDraw = 0;					// The frame we're about to draw
+	this.frameToDraw = 0;				// The frame we're about to draw
 
 	if( isSelfAnimating ) {
 		this.startAnimation();
@@ -50,25 +50,13 @@ AnimationContext.prototype.drawNextFrame = function( closureScope ) {
 	
 	var iFrame= closureScope.frameToDraw;
 	
-	/* 
-	// Map to relative
-	var relativePaths = new Array();
-
-	// Loop through all paths in this frame and turn them into relative paths
-	for( iPath=0; iPath<closureScope.animationFrames[iFrame].length; ++iPath ) {
-		if( closureScope.animationFrames[iFrame][iPath].length > 2 ) {
-			relativePaths.push( drawContext.mapPathToRelative(closureScope.animationFrames[iFrame][iPath]) );
-		}
-	}
-	*/
-	
 	closureScope.animationContext.clear();
 	closureScope.animationContext.drawMultiPolyPointRelative( closureScope.animationFrames[iFrame], 1 );
 	
 	// Increment our last frame drawn status
 	closureScope.frameToDraw++;		
 	if( closureScope.frameToDraw >= closureScope.animationFrames.length ) { closureScope.frameToDraw = 0; }
-} // end AnimationContext.drawFrame
+} // end AnimationContext.drawNextFrame
 
 //////////////////////////////////////////////////////////////////////////
 // Clears the entire animation
@@ -106,4 +94,11 @@ AnimationContext.prototype.addFrameAsAbsolute= function( absoluteFrame ) {
 // Returns the last frame of animation we added
 AnimationContext.prototype.getLastFrame = function() {
 	return this.animationFrames[this.animationFrames.length-1];
+} // end AnimationContext.getLastFrame
+
+
+//////////////////////////////////////////////////////////////////////////
+// Returns the entire animation
+AnimationContext.prototype.getAnimation = function() {
+	return this.animationFrames;
 } // end AnimationContext.getLastFrame

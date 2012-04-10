@@ -100,13 +100,15 @@ fu.get("/who", function (req, res) {
 
 
 //////////////////////////////////////////////////////////////////////////
-// getUserQueue received
-fu.get("/getUserQueue", function (req, res) {
-	util.serverConsole( sys, "getUserQueue:" );
-	var nicks = m_channel.getUserQueue();
+// newFrame received
+fu.get("/newFrame", function (req, res) {
+	util.serverConsole( sys, "newFrame:" );
+	var id = qs.parse(url.parse(req.url).query).id;
+	var animation = qs.parse(url.parse(req.url).query).animation;
+	
+	m_channel.appendMessage( "channel", "newFrame", id, "", animation );
 	
 	res.simpleJSON(200, { 
-		nicks: nicks,
 		rss: mem.rss
 	});
 }); // end getUserQueue

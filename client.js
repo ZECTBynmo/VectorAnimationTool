@@ -91,7 +91,7 @@ function updateUsersLink ( ) {
 }
 
 //handles another person joining chat
-function userJoin(nick, timestamp) {
+function userJoin(nick, id, timestamp) {
 	// Put it in the stream
 	addMessage(nick, "joined", timestamp, "join");
 	
@@ -108,7 +108,7 @@ function userJoin(nick, timestamp) {
 	updateUsersLink();
 	
 	// Create a new user animation chunk
-	addNewUserAnimation( nick );
+	addNewUserAnimation( nick, id );
 }
 
 //handles someone leaving
@@ -328,13 +328,14 @@ function longPoll (data) {
 					break;
 
 				case "join":
-					userJoin(message.nick, message.timestamp);
+					userJoin(message.nick, message.data, message.timestamp);
 					break;
 
 				case "part":
 					userPart(message.nick, message.timestamp);
 					break;	
-				case "nextUser":
+				case "newFrame":
+					receiveFrameUpdate( message.nick, message.text, message.data );
 
 				break;
 			}
@@ -586,32 +587,67 @@ $(window).unload(function () {
 
 //////////////////////////////////////////////////////////////////////////
 // Insert a new animation chunk into the window for a new user
-function addNewUserAnimation( nick ) {
+function addNewUserAnimation( nick, id ) {
 
-	var animationChunk = $(document.createElement("table"));
+	var animationChunk = document.createElement( "table" );
+	animationChunk.setAttribute( 'class', "animationChunk" );
+	animationChunk.setAttribute( 'id', id );
 	
-	animationChunk.addClass("animationChunk");
-
-	var content = '<tr>'
-              + '<td class="id">' 
-			  + nick 
-			  + '</td>'
-              + '<td class="nick">' 
-			  + nick 
-			  + '</td>'
-			  + '</tr><tr>'
-              + '<td class="animationContext" width="133" height="100">' 
-			  + '<div id="anim_' + nick + '" width="133" height="100"></div>'
-			  + '</td>'
-              + '</tr>'
-              ;
-			  
-  animationChunk.html( content );
+	var nickRow = document.createElement( 'tr' );
+	nickRow.setAttribute( 'class', "nick" );
+	nickRow.setAttribute( 'width', "133" );
+	nickRow.setAttribute( 'height', "100" );
+	nickRow.innerHTML = nick;	
+	
+	// Create our animation
+	var newAnimation = document.createElement( 'canvas' );
+	newAnimation.setAttribute( 'id', "anim_" + id );
+	newAnimation.setAttribute( 'class', "animation" );
+	newAnimation.setAttribute( 'width', "133" );
+	newAnimation.setAttribute( 'height', "100" );
+	
+	// Create our animation area
+	var newAnimationArea = document.createElement( 'td' );
+	newAnimationArea.setAttribute( 'class', "animationContext" );
+	newAnimationArea.setAttribute( 'width', "133" );
+	newAnimationArea.setAttribute( 'height', "100" );
+	
+	// Put our animation inside of our animation area
+	newAnimationArea.appendChild( newAnimation );
+	
+	// Grab our animation canvas area
+	var animationCanvasArea= document.getElementById( "roomAnimationCanvases" );
+	
+	// Add our pieces to the new chunk
+	animationChunk.appendChild( nickRow );
+	animationChunk.appendChild( newAnimationArea );
+	
+	// Put our pieces into the page
+	animationCanvasArea.appendChild( animationChunk );
   
-  // Add the new animation chunk to the room animation canvases
-  $("#roomAnimationCanvases").append(animationChunk);
-  
-  // Now create a new animation inside of the chunk we just created
-  var newAnimation = new AnimationContext( "anim_" + nick );
+	// Now create a new animation inside of the chunk we just created
+	var newAnimation = new AnimationContext( "anim_" + id );
   
 } // end addNewUserAnimation()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Pushes our new frame out to the server
+function broadcastNewFrame( animation ) {
+	jQuery.get("/newFrame", { id: CONFIG.id, animation: animation }, function (data, status) {
+		if (status != "success") return;
+		
+		
+	}, "json");
+} // end broadcastNewFrame()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Receives a new animation and pushes it out to the appropriate animation canvas
+function receiveFrameUpdate( nick, id, animation ) {
+	// Grab our animation corresponding to this ID
+	var animationContext = document.getElementById("anim_" + id );
+	
+	// Push the frame into the animation
+	animationContext.addFrameAsAbsolute( animation );
+} // end receiveFrameUpdate()
