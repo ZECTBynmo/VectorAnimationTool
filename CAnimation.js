@@ -11,6 +11,7 @@ function AnimationContext( canvasName, animationIntervalMillis, isSelfAnimating 
 	if( typeof(animationIntervalMillis) == "undefined" ) { animationIntervalMillis = DEFAULT_ANIMATION_INTERVAL_MILLIS; }
 
 	// Our HTML5 canvas
+	this.elementName = canvasName;
 	this.animationContext = new DrawContext( canvasName );
 	
 	// Our animation interval
@@ -39,6 +40,13 @@ AnimationContext.prototype.startAnimation = function() {
 	this.animationInterval = setInterval( function() {		
 		closureScope.drawNextFrame( closureScope );		
 	}, this.animationIntervalTime );
+} // end AnimationContext.startAnimation()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Returns our context's element name
+AnimationContext.prototype.getElementName = function() {
+	return this.elementName;
 } // end AnimationContext.startAnimation()
 
 
@@ -80,9 +88,9 @@ AnimationContext.prototype.addFrameAsAbsolute= function( absoluteFrame ) {
 	var relativePaths = new Array();
 
 	// Loop through all paths we've recorded and turn them into relative paths
-	for( iPath=0; iPath<capturedPaths.length; ++iPath ) {
-		if( capturedPaths[iPath].length > 2 ) {
-			relativePaths.push( drawContext.mapPathToRelative(capturedPaths[iPath]) );
+	for( iPath=0; iPath<absoluteFrame.length; ++iPath ) {
+		if( absoluteFrame[iPath].length > 2 ) {
+			relativePaths.push( drawContext.mapPathToRelative(absoluteFrame[iPath]) );
 		}
 	}	
 	

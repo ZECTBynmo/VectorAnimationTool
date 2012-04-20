@@ -60,11 +60,11 @@ window.addEventListener('load', function () {
 	
 	// Constantly draw the current animation
 	var animationInterval = setInterval( function() {
-		///for( iAnimation = 0; iAnimation<animContexts.length; ++iAnimation ) {
-		//	// Tell this animation context to draw it's next frame
-		//	animContexts[iAnimation].drawNextFrame();
-		//} // end for each animation
-		animationContext.drawNextFrame( animationContext );
+		for( iAnimation = 0; iAnimation<animContexts.length; ++iAnimation ) {
+		// Tell this animation context to draw it's next frame
+			animContexts[iAnimation].drawNextFrame( animContexts[iAnimation] );
+		} // end for each animation
+		//animationContext.drawNextFrame( animationContext );
 	}, ANIMATION_INTERVAL_MILLIS );
 	
 	// Our mouse move handler

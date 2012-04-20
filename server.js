@@ -103,8 +103,9 @@ fu.get("/who", function (req, res) {
 // newFrame received
 fu.get("/newFrame", function (req, res) {
 	util.serverConsole( sys, "newFrame:" );
+	
 	var id = qs.parse(url.parse(req.url).query).id;
-	var animation = qs.parse(url.parse(req.url).query).animation;
+	var animation = qs.parse(url.parse(req.url).query).paths;
 	
 	m_channel.appendMessage( "channel", "newFrame", id, "", animation );
 	

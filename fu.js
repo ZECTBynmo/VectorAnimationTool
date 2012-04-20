@@ -17,14 +17,14 @@ function notFound(req, res) {
   res.end(NOT_FOUND);
 }
 
-var getMap = {};
+var callbackMap = {};
 
 fu.get = function (path, handler) {
-  getMap[path] = handler;
+  callbackMap[path] = handler;
 };
 var server = createServer(function (req, res) {
   if (req.method === "GET" || req.method === "HEAD") {
-    var handler = getMap[url.parse(req.url).pathname] || notFound;
+    var handler = callbackMap[url.parse(req.url).pathname] || notFound;
 
     res.simpleText = function (code, body) {
       res.writeHead(code, { "Content-Type": "text/plain"

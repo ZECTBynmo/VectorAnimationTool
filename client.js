@@ -112,7 +112,7 @@ function userJoin(nick, id, timestamp) {
 }
 
 //handles someone leaving
-function userPart(nick, timestamp) {
+function userPart(nick, id, timestamp) {
   //put it in the stream
   addMessage(nick, "left", timestamp, "part");
   //remove the user from the list
@@ -124,6 +124,16 @@ function userPart(nick, timestamp) {
   }
   //update the UI
   updateUsersLink();
+  
+  if( typeof(id) == "undefined" ) { return; }
+  
+  // Remove this user's animation from the page
+  var roomAnimationCanvases = document.getElementById( 'roomAnimationCanvases' );
+  var oldAnimationChunk = document.getElementById( id );
+  
+  if( typeof(oldAnimationChunk) == "undefined" || typeof(roomAnimationCanvases) == "undefined" ) { return; }
+  
+  roomAnimationCanvases.removeChild( oldAnimationChunk );
 }
 
 // utility functions
@@ -332,7 +342,7 @@ function longPoll (data) {
 					break;
 
 				case "part":
-					userPart(message.nick, message.timestamp);
+					userPart(message.nick, message.data, message.timestamp);
 					break;	
 				case "newFrame":
 					receiveFrameUpdate( message.nick, message.text, message.data );
@@ -589,14 +599,14 @@ $(window).unload(function () {
 // Insert a new animation chunk into the window for a new user
 function addNewUserAnimation( nick, id ) {
 
-	var animationChunk = document.createElement( "table" );
+	var animationChunk = document.createElement( "td" );
 	animationChunk.setAttribute( 'class', "animationChunk" );
 	animationChunk.setAttribute( 'id', id );
 	
 	var nickRow = document.createElement( 'tr' );
 	nickRow.setAttribute( 'class', "nick" );
 	nickRow.setAttribute( 'width', "133" );
-	nickRow.setAttribute( 'height', "100" );
+	nickRow.setAttribute( 'height', "12" );
 	nickRow.innerHTML = nick;	
 	
 	// Create our animation
@@ -626,28 +636,50 @@ function addNewUserAnimation( nick, id ) {
 	animationCanvasArea.appendChild( animationChunk );
   
 	// Now create a new animation inside of the chunk we just created
-	var newAnimation = new AnimationContext( "anim_" + id );
+	newAnimation = new AnimationContext( "anim_" + id );
+	
+	animContexts.push( newAnimation );
   
 } // end addNewUserAnimation()
 
 
 //////////////////////////////////////////////////////////////////////////
 // Pushes our new frame out to the server
-function broadcastNewFrame( animation ) {
-	jQuery.get("/newFrame", { id: CONFIG.id, animation: animation }, function (data, status) {
-		if (status != "success") return;
-		
+function broadcastNewFrame( frame ) {
+	var frameJSON= JSON.stringify( frame );
+	
+	jQuery.get( "/newFrame", {"id": CONFIG.id, "paths": frameJSON}, function (data) { }, "json" );
+	
+	/*
+	jQuery.get("/newFrame", { id: CONFIG.id, paths: frame }, function (data, status) {
+		if (status != "success") return;		
 		
 	}, "json");
+	*/
 } // end broadcastNewFrame()
 
 
 //////////////////////////////////////////////////////////////////////////
 // Receives a new animation and pushes it out to the appropriate animation canvas
 function receiveFrameUpdate( nick, id, animation ) {
+	var uAnimationIndex=0;
+
 	// Grab our animation corresponding to this ID
-	var animationContext = document.getElementById("anim_" + id );
+	for( iAnimation=0; iAnimation<animContexts.length; ++iAnimation ) {
+		var strContextName = "anim_" + id;
+		if( animContexts[iAnimation].getElementName() == strContextName ) {
+			uAnimationIndex = iAnimation;
+			break;
+		}
+	} // end for each animation
+	
+	var animationContext = animContexts[uAnimationIndex];
+	
+	// Just get out if we don't have an animation
+	if( typeof(animationContext) == "undefined" ) { return; }
+	
+	var frame = JSON.parse( animation );
 	
 	// Push the frame into the animation
-	animationContext.addFrameAsAbsolute( animation );
+	animationContext.addFrameAsAbsolute( frame );
 } // end receiveFrameUpdate()

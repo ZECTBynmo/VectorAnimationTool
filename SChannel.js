@@ -176,24 +176,6 @@ Channel.prototype.query = function( since, callback ) {
 
 
 //////////////////////////////////////////////////////////////////////////
-// Sets a random logged in user other than the reporer
-Channel.prototype.setRandomOtherUser = function( since, callback ) {
-	var matching = [];
-	for (var i = 0; i < this.m_messages.length; i++ ) {
-		var message = this.m_messages[i];
-		if ( message.timestamp > since )
-			matching.push( message );
-	}
-
-	if ( matching.length != 0 ) {
-		callback( matching );
-	} else {
-		this.m_callbacks.push({ timestamp: new Date(), callback: callback });
-	}
-}; // end Channel.setRandomOtherUser()
-
-
-//////////////////////////////////////////////////////////////////////////
 // Returns the current user queue for this channel
 Channel.prototype.getUserQueue = function( since, callback ) {
 	return this.m_userManager.getUserQueue();
@@ -208,7 +190,7 @@ Channel.prototype.destroySession = function( id ) {
 	this.m_userManager.destroySession( id );
 	
 	if( util.exists(session) )
-		this.appendMessage(session.m_nick, "part");
+		this.appendMessage( session.m_nick, session.m_id, "part" );
 }; // end Channel.destroySession()
 
 
