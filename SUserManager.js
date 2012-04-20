@@ -101,6 +101,17 @@ UserManager.prototype.getNextQueuedUser = function() {
 
 
 //////////////////////////////////////////////////////////////////////////
+// Pokes the user with the given id
+UserManager.prototype.pokeUser = function( id ) {
+	var userIndex = getUserIndex( id );
+	
+	if( userIndex >= 0 )  {
+		this.m_userList[userIndex].poke();
+	}
+}; // end UserManager.addSession()
+
+
+//////////////////////////////////////////////////////////////////////////
 // Returns the users index in the user list
 UserManager.prototype.getUserIndex = function( id ) {
 	for( iUser=0; iUser<this.m_userList.length; ++iUser ) {

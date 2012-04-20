@@ -367,7 +367,7 @@ function longPoll (data) {
 		, url: "/recv"
 		, dataType: "json"
 		, data: { since: CONFIG.last_message_time, id: CONFIG.id }
-		, error: function () {
+		, error: function ( data ) {
 			addMessage("", "long poll error. trying again...", new Date(), "error");
 			transmission_errors += 1;
 			//don't flood the servers on error, wait 10 seconds before retrying

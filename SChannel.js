@@ -210,6 +210,13 @@ Channel.prototype.addUserToQueue = function( id ) {
 
 
 //////////////////////////////////////////////////////////////////////////
+// Pokes the user with the given ID
+Channel.prototype.pokeUser = function( id ) {
+	this.m_userManager.pokeUser( id );
+}; // end Channel.addUserToQueue()
+
+
+//////////////////////////////////////////////////////////////////////////
 // Returns a list of the current users' nicks
 Channel.prototype.getAllUserNicks = function( id ) {
 	return this.m_userManager.getAllUserNicks( id );
