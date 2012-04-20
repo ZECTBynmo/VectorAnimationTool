@@ -156,7 +156,7 @@ Channel.prototype.userJoin = function( session ) {
 Channel.prototype.query = function( since, callback ) {
 	var matching = [];
 	
-	this.m_util.serverConsole(this.m_sys, "Channel queried. we have: " + this.m_messages.length + " total messages right now.");
+	//this.m_util.serverConsole(this.m_sys, "Channel queried. we have: " + this.m_messages.length + " total messages right now.");
 	for ( var i = 0; i < this.m_messages.length; i++ ) {
 		var message = this.m_messages[i];
 		if (message.timestamp > since)
@@ -168,9 +168,9 @@ Channel.prototype.query = function( since, callback ) {
 	if ( matching.length != 0 ) {
 		callback(matching);		
 	} else {
-		this.m_util.serverConsole(this.m_sys, "No new messages for this session. Jumping in the callbacks queue to wait for some messages." );
+		//this.m_util.serverConsole(this.m_sys, "No new messages for this session. Jumping in the callbacks queue to wait for some messages." );
 		this.m_callbacks.push({ timestamp: new Date(), callback: callback });
-		this.m_util.serverConsole(this.m_sys, "Callbacks queue now has: " + this.m_callbacks.length + " sessions waiting.");
+		//this.m_util.serverConsole(this.m_sys, "Callbacks queue now has: " + this.m_callbacks.length + " sessions waiting.");
 	}
 }; // end Channel.query()
 
@@ -189,8 +189,9 @@ Channel.prototype.destroySession = function( id ) {
 	
 	this.m_userManager.destroySession( id );
 	
-	if( util.exists(session) )
+	if( util.exists(session) ) {
 		this.appendMessage( session.m_nick, session.m_id, "part" );
+	}
 }; // end Channel.destroySession()
 
 

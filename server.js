@@ -257,9 +257,9 @@ fu.get("/recv", function (req, res) {
 		}
 		
 		session.poke();
-		util.serverConsole(sys, "/recv called by user:" + session.m_nick + ", id:" + session.m_id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());
+		//util.serverConsole(sys, "/recv called by user:" + session.m_nick + ", id:" + session.m_id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());
 	} else {
-		util.serverConsole(sys, "/recv called by unknown session with id:" + id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());	
+		//util.serverConsole(sys, "/recv called by unknown session with id:" + id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());	
 	}
 	
 	m_channel.query(since, function (messages) {
