@@ -156,24 +156,6 @@ UserManager.prototype.destroySession = function( id ) {
 	}
 
 	// Search through our user list for the user and delete it
-	for( iUser=0; iUser<this.m_userList.length; ++iUser ) {
-		if( this.m_userList[iUser].m_id == id ) {
-			this.m_userList.splice( iUser, 1 );
-			break;
-		}
-	}
-	
-	// Search through our user list for the user and delete it
-	for( iUser=0; iUser<this.m_userQueue.length; ++iUser ) {
-		if( this.m_userQueue[iUser].m_id == id ) {
-			this.m_userQueue.splice( iUser, 1 );
-			
-			util.serverConsole( sys, "Removed the user from the queue" );
-			
-			// Fire our queue changed event
-			this.m_eventHandler.fireEvent( "userQueueChanged" );
-			
-			break;
-		}
-	}
+	var userIndex = this.getUserIndex( id );
+	this.m_userList.splice( userIndex, 1 );
 }; // end UserManager.destroySession()
