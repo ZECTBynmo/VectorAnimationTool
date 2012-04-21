@@ -189,8 +189,8 @@ Channel.prototype.destroySession = function( id ) {
 	
 	this.m_userManager.destroySession( id );
 	
-	if( util.exists(session) ) {
-		this.appendMessage( session.m_nick, session.m_id, "part" );
+	if( util.exists(session) ) { //nick, type, text, target, data
+		this.appendMessage( session.m_nick, "part", "", "", session.m_id );
 	}
 }; // end Channel.destroySession()
 
