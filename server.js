@@ -121,17 +121,19 @@ fu.get("/join", function (req, res) {
 	util.serverConsole(sys, "join received:" );
 	
 	var nick = qs.parse(url.parse(req.url).query).nick;
-	if (nick == null || nick.length == 0) {
+	if( nick == null || nick.length == 0 ) {
 		res.simpleJSON(400, {error: "Bad nick."});
 		return;
 	}
 	
-	var session = UserSessionImpl.getNewUserSession( nick );
+	var isNickUsed = m_channel.isNickUsed( nick );
 	
-	if (session == null) {
+	if( isNickUsed ) {
 		res.simpleJSON(400, {error: "Nick in use"});
 		return;
 	}
+	
+	var session = UserSessionImpl.getNewUserSession( nick );
 	
 	m_channel.userJoin( session );
 	
@@ -256,7 +258,7 @@ fu.get("/recv", function (req, res) {
 			return; 
 		}
 		
-		session.poke();
+		m_channel.pokeUser( id );
 		//util.serverConsole(sys, "/recv called by user:" + session.m_nick + ", id:" + session.m_id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());
 	} else {
 		//util.serverConsole(sys, "/recv called by unknown session with id:" + id + ", lastMessageReceivedTime: " + lastMessageReceivedTime.toString());	

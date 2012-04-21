@@ -213,7 +213,14 @@ Channel.prototype.addUserToQueue = function( id ) {
 // Pokes the user with the given ID
 Channel.prototype.pokeUser = function( id ) {
 	this.m_userManager.pokeUser( id );
-}; // end Channel.addUserToQueue()
+}; // end Channel.pokeUser()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Returns whether a certain nick is in use
+Channel.prototype.isNickUsed = function( nick ) {
+	return this.m_userManager.isNickUsed( nick );
+}; // end Channel.isNickUsed()
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -101,9 +101,22 @@ UserManager.prototype.getNextQueuedUser = function() {
 
 
 //////////////////////////////////////////////////////////////////////////
+// Returns whether a nick is in use
+UserManager.prototype.isNickUsed = function( nick ) {
+	for( iUser=0; iUser<this.m_userList.length; ++iUser ) {
+		if( this.m_userList[iUser].m_nick == nick ) {
+			return true;
+		}
+	}
+	
+	return false;
+}; // end UserManager.addSession()
+
+
+//////////////////////////////////////////////////////////////////////////
 // Pokes the user with the given id
 UserManager.prototype.pokeUser = function( id ) {
-	var userIndex = getUserIndex( id );
+	var userIndex = this.getUserIndex( id );
 	
 	if( userIndex >= 0 )  {
 		this.m_userList[userIndex].poke();
