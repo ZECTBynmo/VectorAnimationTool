@@ -113,27 +113,30 @@ function userJoin(nick, id, timestamp) {
 
 //handles someone leaving
 function userPart(nick, id, timestamp) {
-  //put it in the stream
-  addMessage(nick, "left", timestamp, "part");
-  //remove the user from the list
-  for (var i = 0; i < nicks.length; i++) {
-    if (nicks[i] == nick) {
-      nicks.splice(i,1)
-      break;
-    }
-  }
-  //update the UI
-  updateUsersLink();
+	//put it in the stream
+	addMessage(nick, "left", timestamp, "part");
+	//remove the user from the list
+	for (var i = 0; i < nicks.length; i++) {
+		if (nicks[i] == nick) {
+			nicks.splice(i,1);
+			break;
+		}
+	}
+	
+	//update the UI
+	updateUsersLink();
+
+	if( typeof(id) == "undefined" ) { return; }
+
+	// Remove this user's animation from the page
+	var roomAnimationCanvases = document.getElementById( 'roomAnimationCanvases' );
+	var oldAnimationChunk = document.getElementById( id );
+
+	if( typeof(oldAnimationChunk) == "undefined" || typeof(roomAnimationCanvases) == "undefined" ) { return; }
   
-  if( typeof(id) == "undefined" ) { return; }
-  
-  // Remove this user's animation from the page
-  var roomAnimationCanvases = document.getElementById( 'roomAnimationCanvases' );
-  var oldAnimationChunk = document.getElementById( id );
-  
-  if( typeof(oldAnimationChunk) == "undefined" || typeof(roomAnimationCanvases) == "undefined" ) { return; }
-  
-  roomAnimationCanvases.removeChild( oldAnimationChunk );
+	if( oldAnimationChunk && roomAnimationCanvases ) {
+		roomAnimationCanvases.removeChild( oldAnimationChunk );
+	}
 }
 
 // utility functions
@@ -294,7 +297,10 @@ var first_poll = true;
 function longPoll (data) {
 	if (transmission_errors > 2) {
 		// We've gotten too many errors. Log out and show the login screen again
-		jQuery.get("/part", {id: CONFIG.id}, function (data) { }, "json");
+		jQuery.get("/part", {id: CONFIG.id}, function (data) {
+			// Reset our transmission error count
+			transmission_errors = 0;
+		}, "json");
 		showConnect();
 		return;
 	}
@@ -368,7 +374,7 @@ function longPoll (data) {
 		, dataType: "json"
 		, data: { since: CONFIG.last_message_time, id: CONFIG.id }
 		, error: function ( data ) {
-			addMessage("", "long poll error. trying again...", new Date(), "error");
+			addMessage("", "long poll error: " + data.error, new Date(), "error");
 			transmission_errors += 1;
 			//don't flood the servers on error, wait 10 seconds before retrying
 			setTimeout(longPoll, 10*1000);
@@ -559,8 +565,8 @@ $(document).ready(function() {
            , dataType: "json"
            , url: "/join"
            , data: { nick: nick }
-           , error: function () {
-               alert("error connecting to server, are you already logged in?");
+           , error: function( data ) {
+               alert("Error connecting to server: " + data.error );
 			   who();
                showConnect();
              }

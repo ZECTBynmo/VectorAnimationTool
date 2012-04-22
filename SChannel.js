@@ -189,8 +189,8 @@ Channel.prototype.destroySession = function( id ) {
 	
 	this.m_userManager.destroySession( id );
 	
-	if( util.exists(session) ) {
-		this.appendMessage( session.m_nick, session.m_id, "part" );
+	if( util.exists(session) ) { //nick, type, text, target, data
+		this.appendMessage( session.m_nick, "part", "", "", session.m_id );
 	}
 }; // end Channel.destroySession()
 
@@ -213,7 +213,14 @@ Channel.prototype.addUserToQueue = function( id ) {
 // Pokes the user with the given ID
 Channel.prototype.pokeUser = function( id ) {
 	this.m_userManager.pokeUser( id );
-}; // end Channel.addUserToQueue()
+}; // end Channel.pokeUser()
+
+
+//////////////////////////////////////////////////////////////////////////
+// Returns whether a certain nick is in use
+Channel.prototype.isNickUsed = function( nick ) {
+	return this.m_userManager.isNickUsed( nick );
+}; // end Channel.isNickUsed()
 
 
 //////////////////////////////////////////////////////////////////////////
