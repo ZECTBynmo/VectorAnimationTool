@@ -56,12 +56,12 @@ fu.get("/VectorDrawingTool.js", fu.staticHandler("VectorDrawingTool.js"));
 fu.get("/jquery-1.7.1.min.js", fu.staticHandler("jquery-1.7.1.min.js"));
 //non-minified (for debugging)
 fu.get("/jquery-ui/development-bundle/jquery-1.7.1.js", fu.staticHandler("jquery-ui/development-bundle/jquery-1.7.1.js"));
-fu.get("/jquery-ui/css/ui-custom01/jquery-ui-1.8.18.custom.css", fu.staticHandler("jquery-ui/css/ui-custom01/jquery-ui-1.8.18.custom.css"));
-fu.get("/jquery-ui/js/jquery-ui-1.8.18.custom.min.js", fu.staticHandler("jquery-ui/js/jquery-ui-1.8.18.custom.min.js"));
+fu.get("/jquery-ui/css/smoothness/jquery-ui-1.8.19.custom.css", fu.staticHandler("jquery-ui/css/smoothness/jquery-ui-1.8.19.custom.css"));
+fu.get("/jquery-ui/js/jquery-ui-1.8.19.custom.min.js", fu.staticHandler("jquery-ui/js/jquery-ui-1.8.19.custom.min.js"));
 //non-minified (for debugging)
-fu.get("/jquery-ui/development-bundle/ui/jquery-ui-1.8.18.custom.js", fu.staticHandler("jquery-ui/development-bundle/ui/jquery-ui-1.8.18.custom.js"));
-fu.staticDirHandler("jquery-ui/css/ui-custom01/images/");
-fu.get("/jquery-ui/js/jquery-ui-1.8.18.custom.min.js", fu.staticHandler("jquery-ui/js/jquery-ui-1.8.18.custom.min.js"));
+fu.get("/jquery-ui/development-bundle/ui/jquery-ui-1.8.19.custom.js", fu.staticHandler("jquery-ui/development-bundle/ui/jquery-ui-1.8.19.custom.js"));
+fu.staticDirHandler("jquery-ui/css/smoothness/images/");
+fu.get("/jquery-ui/js/jquery-ui-1.8.19.custom.min.js", fu.staticHandler("jquery-ui/js/jquery-ui-1.8.19.custom.min.js"));
 
 
 /*
