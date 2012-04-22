@@ -31,6 +31,13 @@ var canvas;
 // Keep everything in anonymous function, called on window load.
 if(window.addEventListener) {
 window.addEventListener('load', function () {
+	// Setup our jQuery buttons
+	$("#connectButton").button({});
+	$("#clearButton").button({});
+	$("#copyButton").button({});
+	$("#pushFrameButton").button({});
+	$("#clearAnimationButton").button({});
+
 	// Create a new animation context and push it into our collection
 	animationContext = new AnimationContext( "animationCanvas" );
 	animContexts.push( animationContext );
