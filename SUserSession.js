@@ -31,5 +31,3 @@ function UserSession( nick ) {
 UserSession.prototype.poke = function( nick, type, text, target, data ) {
 	this.m_timestamp = new Date();
 } // end UserSession.poke()
-
-
