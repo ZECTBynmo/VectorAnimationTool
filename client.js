@@ -648,7 +648,7 @@ function addNewUserAnimation( nick, id ) {
 function broadcastNewFrame( frame ) {
 	var frameJSON= JSON.stringify( frame );
 	
-	jQuery.get( "/newFrame", {"id": CONFIG.id, "paths": frameJSON}, function (data) { }, "json" );
+	jQuery.post( "/newFrame", {"id": CONFIG.id, "paths": frameJSON}, function (data) { }, "json" );
 	
 	/*
 	jQuery.get("/newFrame", { id: CONFIG.id, paths: frame }, function (data, status) {
