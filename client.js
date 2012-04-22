@@ -654,7 +654,16 @@ function addNewUserAnimation( nick, id ) {
 function broadcastNewFrame( frame ) {
 	var frameJSON= JSON.stringify( frame );
 	
-	jQuery.post( "/newFrame", {"id": CONFIG.id, "paths": frameJSON}, function (data) { }, "json" );
+	// Send the frame to the server
+	$.ajax({ cache: false
+           , type: "HEAD"
+           , dataType: "json"
+           , url: "/newFrame"
+           , data: {"id": CONFIG.id, "paths": frameJSON}
+           , error: function( data ) { alert( "Failed to send frame to server: " ); }
+	});
+	
+	//jQuery.post( "/newFrame", {"id": CONFIG.id, "paths": frameJSON}, function (data) { }, "json" );
 	
 	/*
 	jQuery.get("/newFrame", { id: CONFIG.id, paths: frame }, function (data, status) {
