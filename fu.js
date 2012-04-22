@@ -22,27 +22,56 @@ var callbackMap = {};
 fu.get = function (path, handler) {
   callbackMap[path] = handler;
 };
+
 var server = createServer(function (req, res) {
-  if (req.method === "GET" || req.method === "HEAD") {
-    var handler = callbackMap[url.parse(req.url).pathname] || notFound;
+	if (req.method === "GET" || req.method === "HEAD") {
+		var handler = callbackMap[url.parse(req.url).pathname] || notFound;
 
-    res.simpleText = function (code, body) {
-      res.writeHead(code, { "Content-Type": "text/plain"
-                          , "Content-Length": body.length
-                          });
-      res.end(body);
-    };
+		res.simpleText = function (code, body) {
+			res.writeHead(code, { "Content-Type": "text/plain"
+							  , "Content-Length": body.length
+							  });
+			res.end(body);
+		};
 
-    res.simpleJSON = function (code, obj) {
-      var body = new Buffer(JSON.stringify(obj));
-      res.writeHead(code, { "Content-Type": "text/json"
-                          , "Content-Length": body.length
-                          });
-      res.end(body);
-    };
+		res.simpleJSON = function (code, obj) {
+			var body = new Buffer(JSON.stringify(obj));
+			res.writeHead(code, { "Content-Type": "text/json"
+							  , "Content-Length": body.length
+							  });
+			res.end(body);
+		};
 
-    handler(req, res);
-  }
+		handler(req, res);
+	} else if( req.method === "POST" ) {
+		var fullBody = '';
+	
+		req.on('data', function(chunk) {
+			// append the current chunk of data to the fullBody variable
+			fullBody += chunk.toString();
+		});
+	 
+		req.on("end", function() {
+			var handler = callbackMap[url.parse(req.url).pathname] || notFound;
+
+			res.simpleText = function (code, body) {
+				res.writeHead(code, { "Content-Type": "text/plain"
+								  , "Content-Length": body.length
+								  });
+				res.end(body);
+			};
+
+			res.simpleJSON = function (code, obj) {
+				var body = new Buffer(JSON.stringify(obj));
+				res.writeHead(code, { "Content-Type": "text/json"
+								  , "Content-Length": body.length
+								  });
+				res.end(body);
+			};
+
+			handler(req, res, fullBody);
+		});
+	}
 });
 
 fu.listen = function (port, host) {

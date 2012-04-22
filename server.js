@@ -101,17 +101,22 @@ fu.get("/who", function (req, res) {
 
 //////////////////////////////////////////////////////////////////////////
 // newFrame received
-fu.get("/newFrame", function (req, res) {
+fu.get("/newFrame", function (req, res, fullBody) {
 	util.serverConsole( sys, "newFrame:" );
 	
-	var id = qs.parse(url.parse(req.url).query).id;
-	var animation = qs.parse(url.parse(req.url).query).paths;
+	// parse the received body data
+	var decodedBody = qs.parse(fullBody);
+	
+	var id = decodedBody.id;
+	var animation = decodedBody.paths;
 	
 	m_channel.appendMessage( "channel", "newFrame", id, "", animation );
 	
 	res.simpleJSON(200, { 
 		rss: mem.rss
 	});
+	
+	res.end();
 }); // end getUserQueue
 
 

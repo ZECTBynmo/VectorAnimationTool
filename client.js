@@ -656,7 +656,7 @@ function broadcastNewFrame( frame ) {
 	
 	// Send the frame to the server
 	$.ajax({ cache: false
-           , type: "HEAD"
+           , type: "POST"
            , dataType: "json"
            , url: "/newFrame"
            , data: {"id": CONFIG.id, "paths": frameJSON}
