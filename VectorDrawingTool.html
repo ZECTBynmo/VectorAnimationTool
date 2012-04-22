@@ -50,8 +50,8 @@
 			
 			#controls {
 				position: fixed;
-				left: 810;
-				top: 200;
+				left: 610;
+				top: 150;
 			}
 			
 			#previewContainer {
@@ -139,10 +139,10 @@
 			/*----------- ANIMATION CONTEXTS -------*/
 			#roomAnimationCanvases {
 				position: fixed;
-				width: 508;
-				left: 805;
-				top: 440;
-				height: 200;
+				width: 1280;
+				left: 0;
+				top: 460;
+				height: 140;
 				border-style: ridge;
 				border-top: 2px solid #100202;
 				overflow:hidden;
@@ -152,8 +152,8 @@
 		<!-- -------------------------------------------------------------------------------------------- -->
 		<!-- HTML --------------------------------------------------------------------------------------- -->
 		<!-- -------------------------------------------------------------------------------------------- -->
-		<div id="container" width="800" height="600">
-			<canvas id="canvas" width="800" height="600">
+		<div id="container" width="600" height="450">
+			<canvas id="canvas" width="600" height="450">
 				<p>Unfortunately, your browser is currently unsupported by our web 
 				application.  We are sorry for the inconvenience. Please use one of the 
 				supported browsers listed below, or draw the image you want using an 
@@ -171,6 +171,7 @@
 		
 		
 		<div id="controls">
+			<small>
 			<input id="clearButton" type="button" onClick="clearCanvas();" value="Clear Canvas"/>
 			<br>
 			<!--<input id="saveButton" type="button" value="Save All"/>-->
@@ -182,6 +183,7 @@
 			<br><br>
 			
 			<input id="clearAnimationButton" type="button" onClick="clearAnimation();" value="Clear Animation"/>
+			</small>
 		</div>
 		<div id="app">
 			<div id="connect">
@@ -192,7 +194,9 @@
 						</p>
 						<label for="nick">Name</label>
 						<input id="nickInput" class="text"type="text" name="nick" value=""/>
-						<input id="connectButton" class="button" type="submit" name="" value="Join"/>
+						<small>
+							<input id="connectButton" class="button" type="submit" name="" value="Join"/>
+						</small>
 					</fieldset>
 				</form>
 			</div>
