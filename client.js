@@ -352,8 +352,9 @@ function longPoll (data) {
 					break;	
 				case "newFrame":
 					receiveFrameUpdate( message.nick, message.text, message.data );
-
 				break;
+				case "clearAnimation":
+					receiveClearAnimation( message.nick, message.data );
 			}
 		} // end for each message
 		
@@ -390,6 +391,26 @@ function longPoll (data) {
 		}
 	});
 }
+
+// Receives a clear animation call from another user
+function receiveClearAnimation( nick, id ) {
+	var animContext;
+	
+	// Grab our animation corresponding to this ID
+	for( iAnimation=0; iAnimation<animContexts.length; ++iAnimation ) {
+		var strContextName = "anim_" + id;
+		if( animContexts[iAnimation].getElementName() == strContextName ) {
+			animContext = animContexts[iAnimation];
+			break;
+		}
+	} // end for each animation
+	
+	if( typeof(animContext) != "undefined" ) { 	
+		// Clear the animation
+		animContext.clearAnimation();
+	}
+} // end receiveClearAnimation()
+
 
 // Pull the youtube ID string out of a normal url
 function getIdFromUrl(url) {
@@ -672,6 +693,17 @@ function broadcastNewFrame( frame ) {
 	}, "json");
 	*/
 } // end broadcastNewFrame()
+
+
+function broadcastClearAnimation() {
+	$.ajax({ cache: false
+           , type: "GET"
+           , dataType: "json"
+           , url: "/clearAnimation"
+           , data: {"id": CONFIG.id, "nick": CONFIG.nick}
+           , error: function( data ) { alert( "Failed send clear animation: " ); }
+	});
+} // end broadcastClearAnimation()
 
 
 //////////////////////////////////////////////////////////////////////////

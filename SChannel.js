@@ -69,7 +69,7 @@ Channel.prototype.appendMessage = function( nick, type, text, target, data ) {
 
 	var msg = { 
 			  nick: nick /////////// add new message types to this list ////////////////////////
-			, type: type // "msg", "join", "part", "vidStart", "vidPlay", "vidQueue", "nextUser", "userQueueChanged"
+			, type: type // "msg", "join", "part", "newFrame", "clearAnimation"
 			, text: text ///////////////////////////////////////////////////////////////////////
 			, timestamp: (new Date()).getTime()
 			, target: target
@@ -92,6 +92,8 @@ Channel.prototype.appendMessage = function( nick, type, text, target, data ) {
 		case "join":
 			break;
 		case "part":
+			break;
+		case "clearAnimation":
 			break;
 		case "newFrame":
 			break;

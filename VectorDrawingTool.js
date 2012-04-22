@@ -167,6 +167,8 @@ function clearCanvas() {
 // Clears the entire animation
 function clearAnimation() {
 	animationContext.clearAnimation();
+
+	broadcastClearAnimation();
 }
 
 // Clears the canvas and redraws everything on it

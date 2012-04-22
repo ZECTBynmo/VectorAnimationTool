@@ -117,7 +117,28 @@ fu.get("/newFrame", function (req, res, fullBody) {
 	});
 	
 	res.end();
-}); // end getUserQueue
+}); // end /newFrame
+
+
+//////////////////////////////////////////////////////////////////////////
+// clearAnimation received
+fu.get("/clearAnimation", function (req, res, fullBody) {
+	util.serverConsole( sys, "clearAnimation:" );
+	
+	// parse the received body data
+	var decodedBody = qs.parse(fullBody);
+	
+	var id = qs.parse(url.parse(req.url).query).id;
+	var nick = qs.parse(url.parse(req.url).query).nick;
+	
+	m_channel.appendMessage( nick, "clearAnimation", "", "", id );
+	
+	res.simpleJSON(200, { 
+		rss: mem.rss
+	});
+	
+	res.end();
+}); // end /clearAnimation
 
 
 //////////////////////////////////////////////////////////////////////////
