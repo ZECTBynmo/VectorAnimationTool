@@ -1,1 +1,1 @@
-The Vector Animation Tool allows you to create vector animations that can be easily drawn using the DrawContext class
+This repository was originally supposed to be a tool for drawing vector art, so that I could build characters/images for another project. However, that quickly changed. If you start it up right now, you will find a real time application where multiple users can sit in a room and make simple animations.
